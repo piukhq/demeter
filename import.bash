@@ -29,10 +29,10 @@ echo "Importing Amex files..."
 
 # push everything across to the DB server
 echo "Copying to Aphrodite..."
-rsync -r -e "ssh -p $db_port" --progress $import_dir/* $db_conn:$db_import_dir
+/usr/bin/rsync -r -e "ssh -p $db_port" --progress $import_dir/* $db_conn:$db_import_dir
 
 # move everything into the archive directory
 echo "Archiving files..."
-rsync -a --progress --remove-source-files $import_dir $archive_dir
+/usr/bin/rsync -a --progress --remove-source-files $import_dir $archive_dir
 
 echo "All done."
