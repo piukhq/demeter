@@ -14,14 +14,21 @@ db_import_dir="/tmp/import/payment"
 # create the folders we're going to need
 mkdir -p $import_dir
 
+echo `date`
+
 # pull visa files
 echo "Importing Visa files..."
 mkdir -p $import_dir/visa
-sudo /bin/bash -c '/usr/bin/rsync --progress -a --remove-source-files /home/veft2016aP/*.pgp /tmp/demeter/import/visa/'
+# this can fail if the glob doesn't match anything, so ignore failures (dangerous...) and move on
+! sudo /bin/bash -c '/usr/bin/rsync --progress -a --remove-source-files /home/veft2016aP/*.pgp /tmp/demeter/import/visa/'
+
+# pull visa plaintext files
+echo "Importing Visa plaintext files..."
+/usr/bin/rsync --remove-source-files --progress -a /var/lib/demeter/recovery/visa/ /tmp/demeter/import/visa/
 
 # pull mastercard files
 echo "Importing Mastercard files..."
-/usr/bin/rsync --remove-source-files --progress -a --exclude='.*' /home/mfesftp/ /tmp/demeter/import/mastercard
+/usr/bin/rsync --remove-source-files --progress -a --exclude='.*' /home/mfesftp/ /tmp/demeter/import/mastercard/
 
 # pull amex files
 echo "Importing Amex files..."
@@ -36,3 +43,5 @@ echo "Archiving files..."
 /usr/bin/rsync -a --progress --remove-source-files $import_dir $archive_dir
 
 echo "All done."
+echo ''
+
