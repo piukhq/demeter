@@ -14,19 +14,20 @@ db_import_dir="/tmp/import/payment"
 # create the folders we're going to need
 mkdir -p $import_dir
 
+echo '-----------------------------------------------------------------------------------------------------------------'
 echo `date`
 
 # if veft2016aP is logged in, we want to skip the visa files this time around.
 set +e
 username='veft2016aP'
-w -h | awk '{print $1}' | grep -q $username
+ps ax | grep -v grep | grep "sshd: $username"
 if [ $? != 0 ]; then
     # pull visa files
     echo "Importing Visa files..."
     mkdir -p $import_dir/visa
 
     # this can fail if the glob doesn't match anything, so ignore failures (dangerous...) and move on
-    /usr/bin/rsync --progress -a --remove-source-files /home/veft2016aP/*.pgp /tmp/demeter/import/visa/
+    /usr/bin/rsync --progress -a --remove-source-files /home/veft2016aP/*.C2.pgp /tmp/demeter/import/visa/
 else
     echo "$username is logged in, skipping Visa files..."
 fi
