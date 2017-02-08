@@ -42,6 +42,10 @@ echo "[`date`] Importing Mastercard files..."
 echo "[`date`] Importing Amex files..."
 /usr/bin/lftp 'sftp://CHINGSPRD:taua@13@fsgateway.aexp.com' -e "mirror outbox $import_dir/amex; bye"
 
+# pull amex recovery files
+echo "[`date`] Importing Amex recovery files..."
+/usr/bin/rsync --remove-source-files --progress -a /var/lib/demeter/recovery/amex/ /tmp/demeter/import/amex/
+
 # push everything across to the DB server
 echo "[`date`] Copying to Aphrodite..."
 /usr/bin/rsync -r -e "ssh -p $db_port" --progress $import_dir/* $db_conn:$db_import_dir
