@@ -40,7 +40,8 @@ echo "[`date`] Importing Mastercard files..."
 
 # pull amex files
 echo "[`date`] Importing Amex files..."
-/usr/bin/lftp 'sftp://CHINGSPRD:taua@13@fsgateway.aexp.com' -e "mirror outbox $import_dir/amex; bye"
+
+/usr/bin/lftp 'sftp://CHINGSPRD:taua@13@fsgateway.aexp.com' -e "mirror --include-glob=AXP_CHINGS_TLOG_* outbox $import_dir/amex; bye"
 
 # pull amex recovery files
 echo "[`date`] Importing Amex recovery files..."
