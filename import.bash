@@ -15,9 +15,9 @@ archive_host="txmatch@172.26.126.22"
 archive_port="2020"
 
 # txmatching server details
+db_import_dir="/tmp/import/payment/$provider"
 db_host="txmatch@172.26.127.21"
 db_port="2020"
-db_import_dir="/tmp/import/payment/$provider"
 
 echo "[$(date)] Archiving $file_name"
 /usr/bin/rsync -e "ssh -p $archive_port" -a --progress "$file_path" "$archive_host:$archive_dir"
