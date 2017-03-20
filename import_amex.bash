@@ -1,6 +1,12 @@
 #!/bin/bash
 set -eu
 
+logfile=/var/log/demeter/import.log
+
+function log() {
+    echo "$1" >> "$logfile"
+}
+
 import_dir="/tmp/demeter/amex"
 
 recovery_dir="/data/demeter/recovery/amex/"
@@ -18,17 +24,16 @@ db_port="2020"
 # create the folders we're going to need
 mkdir -p $import_dir
 
-echo "[$(date)] Importing Amex files..."
+log "[$(date)] Importing Amex files..."
 /usr/bin/lftp 'sftp://CHINGSPRD:taua@13@fsgateway.aexp.com' -e "mirror --include-glob=AXP_CHINGS_TLOG_* outbox $import_dir; bye"
 
-echo "[$(date)] Importing Amex recovery files..."
+log "[$(date)] Importing Amex recovery files..."
 /usr/bin/rsync -a --progress "$recovery_dir" "$import_dir"
 
-echo "[$(date)] Archiving files..."
+log "[$(date)] Archiving files..."
 /usr/bin/rsync -e "ssh -p $archive_port" -a --progress "$import_dir" "$archive_host:$archive_dir"
 
-echo "[$(date)] Transferring to aphrodite..."
+log "[$(date)] Transferring to aphrodite..."
 /usr/bin/rsync -r -e "ssh -p $db_port" -a --progress --remove-source-files "$import_dir/*" "$db_host:$db_import_dir"
 
-echo "[$(date)] Amex files transferred."
-echo ''
+log "[$(date)] Amex files transferred."
