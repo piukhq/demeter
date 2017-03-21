@@ -26,9 +26,9 @@ db_host="txmatch@172.26.127.21"
 db_port="2020"
 
 log "[$(date)] Archiving $file_name"
-/usr/bin/rsync -e "ssh -p $archive_port" -a --progress "$file_path" "$archive_host:$archive_dir"
+log $(/usr/bin/rsync -e "ssh -p $archive_port" -a --progress "$file_path" "$archive_host:$archive_dir")
 
 log "[$(date)] Transferring $file_name to aphrodite"
-/usr/bin/rsync -e "ssh -p $db_port" -a --progress --remove-source-files "$file_path" "$db_host:$db_import_dir"
+log $(/usr/bin/rsync -e "ssh -p $db_port" -a --progress --remove-source-files "$file_path" "$db_host:$db_import_dir")
 
 log "[$(date)] $1 file transferred."
