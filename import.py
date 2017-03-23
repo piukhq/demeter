@@ -29,16 +29,16 @@ import_file_name_patterns = {
 }
 
 
+logging.basicConfig(filename=logfile,
+                    level=logging.DEBUG,
+                    format='[%(asctime)s] %(levelname)s :: %(message)s')
 logger = logging.getLogger('__name__')
-logger.basicConfig(filename=logfile,
-                   level=logging.DEBUG,
-                   format='[%(asctime)s] %(levelname)s :: %(message)s')
 
 logger.debug('Running import process for {} file: {}.'.format(provider, file_path))
 
-pattern = import_file_name_patterns[provider].match(file_name)
-if not pattern:
-    logger.debug('Skipping file name {} as it does not match the regex {}'.format(file_name, repr(pattern)))
+pattern = import_file_name_patterns[provider]
+if not pattern.match(file_name):
+    logger.debug('Skipping file name {} as it does not match the regex {}'.format(file_name, pattern.pattern))
     exit(0)
 
 logger.debug('Archiving file...')

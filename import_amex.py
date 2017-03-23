@@ -21,10 +21,10 @@ db_server = {
 }
 
 
+logging.basicConfig(filename=logfile,
+                    level=logging.DEBUG,
+                    format='[%(asctime)s] %(levelname)s :: %(message)s')
 logger = logging.getLogger('__name__')
-logger.basicConfig(filename=logfile,
-                   level=logging.DEBUG,
-                   format='[%(asctime)s] %(levelname)s :: %(message)s')
 
 logger.debug('Running import process for amex files.')
 
