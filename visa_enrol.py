@@ -15,16 +15,16 @@ archive_server = {
     'dir': '/data/demeter/archive/amex/',
 }
 
+logging.basicConfig(filename=logfile,
+                    level=logging.DEBUG,
+                    format='[%(asctime)s] %(levelname)s :: %(message)s')
 logger = logging.getLogger('__name__')
-logger.basicConfig(filename=logfile,
-                   level=logging.DEBUG,
-                   format='[%(asctime)s] %(levelname)s :: %(message)s')
 
 logger.debug('Running visa enrolment file export process for file: {}.'.format(file_path))
 
 logger.debug('Transferring file to visa...')
 lftp('sftp://la.taqc:DUMMY_PASSWORD@198.241.159.22',
-     '-e', '"set sftp:connect-program \'ssh -a -x -i /root/.ssh/id_rsa_visa\'; put $file_path; bye"')
+     '-e', '"set sftp:connect-program \'ssh -a -x -i /root/.ssh/id_rsa_visa\'; put {}; bye"'.format(file_path))
 
 logger.debug('Archiving file...')
 rsync('-e', 'ssh -p {}'.format(archive_server['port']),
