@@ -34,7 +34,7 @@ if not enrolment_file_name_pattern.match(file_name):
 
 logger.debug('Transferring file to visa...')
 lftp('sftp://la.taqc:DUMMY_PASSWORD@198.241.159.22',
-     '-e', '"set sftp:connect-program \'ssh -a -x -i /root/.ssh/id_rsa_visa\'; put {}; bye"'.format(file_path))
+     '-e', "set sftp:connect-program 'ssh -a -x -i /root/.ssh/id_rsa_visa'; put {}; bye".format(file_path))
 
 logger.debug('Archiving file...')
 rsync('-e', 'ssh -p {}'.format(archive_server['port']),
