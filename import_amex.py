@@ -39,7 +39,7 @@ rsync('-r',
       '-e', 'ssh -p {}'.format(archive_server['port']),
       '-a',
       '--progress',
-      '{}'.format(import_dir),
+      import_dir,
       '{}:{}'.format(archive_server['host'],
                      archive_server['dir']))
 
@@ -49,7 +49,7 @@ rsync('-r',
       '-a',
       '--progress',
       '--remove-source-files',
-      '{}'.format(import_dir),
+      import_dir,
       '{}:{}'.format(db_server['host'],
                      db_server['dir']))
 
