@@ -1,7 +1,6 @@
 stages:
   - tests
   - build
-  - deploy
 
 black:
   stage: tests
@@ -19,16 +18,7 @@ build-develop:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
   script:
-    - docker build --pull -t "$CI_REGISTRY/demeter:latest" .
-    - docker push "$CI_REGISTRY/demeter:latest"
+    - docker build --pull -t "$CI_REGISTRY/demeter:master-$CI_COMMIT_SHORT_SHA" .
+    - docker push "$CI_REGISTRY/demeter:master-$CI_COMMIT_SHORT_SHA"
   only:
     - master
-
-tag-develop:
-  stage: deploy
-  image: binkops.azurecr.io/tagbot:latest
-  script:
-    - tagbot --username "$CI_REGISTRY_USER" --password "$CI_REGISTRY_PASSWORD" --source "$CI_REGISTRY/demeter:latest" --tag "develop-$CI_COMMIT_SHORT_SHA"
-  only:
-    - master
-
