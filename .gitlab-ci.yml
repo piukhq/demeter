@@ -1,0 +1,34 @@
+stages:
+  - tests
+  - build
+  - deploy
+
+black:
+  stage: tests
+  script:
+    - pip3 install poetry
+    - poetry install
+    - poetry run black -l 120 -t py38 --check .
+    # - poetry run py.test
+
+build-develop:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+  script:
+    - docker build --pull -t "$CI_REGISTRY/demeter:latest" .
+    - docker push "$CI_REGISTRY/demeter:latest"
+  only:
+    - master
+
+tag-develop:
+  stage: deploy
+  image: binkops.azurecr.io/tagbot:latest
+  script:
+    - tagbot --username "$CI_REGISTRY_USER" --password "$CI_REGISTRY_PASSWORD" --source "$CI_REGISTRY/demeter:latest" --tag "develop-$CI_COMMIT_SHORT_SHA"
+  only:
+    - master
+
