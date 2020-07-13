@@ -1,0 +1,19 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+docker = "*"
+black = "==19.10b0"
+flake8 = "*"
+
+[packages]
+paramiko = "*"
+azure-storage-blob = "*"
+apscheduler = "*"
+pylogrus = "*"
+
+[requires]
+python_version = "3.7"
