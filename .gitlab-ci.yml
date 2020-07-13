@@ -2,12 +2,16 @@ stages:
   - tests
   - build
 
+default:
+  image: binkhq/python:3.8 
+
 black:
   stage: tests
+  before_script:
+    - pip install pipenv
+    - pipenv install --dev --system --deploy --ignore-pipfile
   script:
-    - pip3 install poetry
-    - poetry install
-    - poetry run black -l 120 -t py38 --check .
+    - black -l 120 -t py38 --check .
     # - poetry run py.test
 
 build-develop:
