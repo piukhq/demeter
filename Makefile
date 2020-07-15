@@ -1,3 +1,3 @@
 lint:
-	poetry run black -l 120 -t py38 .
+	pipenv run black -l 120 -t py38 .
 
