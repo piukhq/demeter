@@ -167,7 +167,7 @@ def main():
     else:
         scheduler = BlockingScheduler()
         scheduler.add_job(run_download, trigger=CronTrigger.from_crontab("0 * * * *"))
-        scheduler.add_job(run_upload(), trigger=CronTrigger.from_crontab("5/15 * * * *"))
+        scheduler.add_job(run_upload, trigger=CronTrigger.from_crontab("5/15 * * * *"))
         scheduler.start()
 
 
