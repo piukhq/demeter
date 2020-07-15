@@ -79,7 +79,7 @@ def run_download(env: Dict[str, str] = os.environ, client_class: Type[BlobServic
         full_path = os.path.join("./outbox", file)
         if AMEX_TRANSACTION_FILE.match(file):
             local_logger.info(f"Matched transaction {file}, uploading to blob storage")
-            blob = transaction_client.get_blob_client(container=transaction_storage_container, blob=f'payment/amex/{file}')
+            blob = transaction_client.get_blob_client(container=transaction_storage_container, blob=f"payment/amex/{file}")
 
             blob_data = io.BytesIO()
             amex_sftp.getfo(full_path, blob_data)
