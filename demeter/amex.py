@@ -131,7 +131,7 @@ def run_upload(env: Dict[str, str] = os.environ, client_class: Type[BlobServiceC
                     logger.exception("Failed to setup SFTP connection", exc_info=err)
                     return
 
-            full_path = os.path.join("inbox", os.path.basename(blob.name))
+            full_path = os.path.join("/inbox", os.path.basename(blob.name))
             blob = mid_container_client.get_blob_client(blob=blob.name)
 
             blob_data = io.BytesIO()
