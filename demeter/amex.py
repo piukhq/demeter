@@ -19,7 +19,7 @@ LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
 
 AMEX_TRANSACTION_FILE = re.compile(r"AXP_CHINGS_TLOG_.+")
 AMEX_MID_OUTPUT_FILE = re.compile(r"CHINGS_AXP_MER_REG_RESP_.+")
-AMEX_MID_INPUT_FILE = re.compile(r".+CHINGS_AXP_MER_REG_\d.+")
+AMEX_MID_INPUT_FILE = re.compile(r"CHINGS_AXP_MER_REG_\d.+")
 
 
 def fmt_pw(password: str) -> str:
