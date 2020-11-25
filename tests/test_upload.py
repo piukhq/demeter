@@ -1,4 +1,3 @@
-from collections import defaultdict
 from unittest import mock
 
 import demeter.amex
@@ -10,7 +9,7 @@ def test_upload_transaction(download_file, list_dir, sftp_server) -> None:
 
     env = sftp_server["env"].copy()
     env.update(
-        {"MID_BLOB_STORAGE_ACCOUNT": "2", "MID_BLOB_STORAGE_TOKEN": "2", "MID_BLOB_STORAGE_CONTAINER": "container2",}
+        {"MID_BLOB_STORAGE_ACCOUNT": "2", "MID_BLOB_STORAGE_TOKEN": "2", "MID_BLOB_STORAGE_CONTAINER": "container2"}
     )
 
     mock_blob_client = mock.Mock()

@@ -72,10 +72,14 @@ def run_download(env: Dict[str, str] = os.environ, client_class: Type[BlobServic
         logger.exception("Failed to setup SFTP connection", exc_info=err)
         return
 
-    transaction_client = client_class(account_url=transaction_storage_account, credential=transaction_storage_token)
+    transaction_client = client_class(
+        account_url=f"https://{transaction_storage_account}.blob.core.windows.net",
+        credential=transaction_storage_token
+    )
     mid_client = client_class(account_url=mid_storage_account, credential=mid_storage_token)
 
     for file in amex_sftp.listdir("./outbox/"):
+        local_logger.info(f"Processing file: {file}")
         full_path = os.path.join("./outbox", file)
         if AMEX_TRANSACTION_FILE.match(file):
             local_logger.info(f"Matched transaction {file}, uploading to blob storage")
@@ -86,8 +90,13 @@ def run_download(env: Dict[str, str] = os.environ, client_class: Type[BlobServic
             blob_data = io.BytesIO()
             amex_sftp.getfo(full_path, blob_data)
             blob_data.seek(0)
-            blob.upload_blob(blob_data, overwrite=True)
-            local_logger.info("Uploaded to blob storage")
+            try:
+                blob.upload_blob(blob_data, overwrite=True)
+                local_logger.info("Uploaded to blob storage")
+            except Exception:
+                local_logger.exception(f"Failed to upload file to blob storage, backing off to '/tmp/{file}'")
+                with open(f'/tmp/{file}', 'wb') as f:
+                    f.write(blob_data)
 
         elif AMEX_MID_OUTPUT_FILE.match(file):
             local_logger.info(f"Matched MID {file}, uploading to blob storage")
@@ -157,7 +166,7 @@ def main():
     logger.info("Started AMEX SFTP watcher")
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--now", type=str, default="", choices=("download", "upload"), help="Run database sync now")
+    parser.add_argument("--now", type=str, default="", choices=("download", "upload"), help="Run sync now")
     args = parser.parse_args()
 
     if args.now == "download":

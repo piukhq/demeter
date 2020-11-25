@@ -5,14 +5,12 @@ stages:
 default:
   image: binkhq/python:3.8 
 
-black:
+flake8:
   stage: tests
   before_script:
-    - pip install pipenv
-    - pipenv install --dev --system --deploy --ignore-pipfile
+    - pip install flake8
   script:
-    - black -l 120 -t py38 --check .
-    # - poetry run py.test
+    - flake8
 
 build-develop:
   stage: build

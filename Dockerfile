@@ -1,4 +1,4 @@
-FROM binkhq/python:3.7
+FROM binkhq/python:3.8
 WORKDIR /app
 COPY demeter /app/demeter
 COPY Pipfile /app
