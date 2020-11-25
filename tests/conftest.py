@@ -72,7 +72,7 @@ def sftp_server(unused_port, docker_client):
 
                 server_params["sftp"] = sftp
                 break
-            except Exception as err:
+            except Exception:
                 time.sleep(delay)
                 delay *= 2
         else:
