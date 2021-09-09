@@ -1,10 +1,11 @@
-FROM binkhq/python:3.8
+FROM ghcr.io/binkhq/python:3.9
+
 WORKDIR /app
 COPY demeter /app/demeter
 COPY Pipfile /app
 COPY Pipfile.lock /app
 
-RUN pip --no-cache-dir install pipenv && \
-    pipenv install --system --deploy --ignore-pipfile
+RUN pipenv install --system --deploy --ignore-pipfile
 
+ENTRYPOINT [ "linkerd-await", "--" ]
 CMD ["python", "-m", "demeter.amex"]

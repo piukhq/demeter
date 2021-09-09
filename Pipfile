@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 docker = "*"
-black = "==20.8b1"
+black = "==21.8b0"
 flake8 = "*"
 isort = "*"
 
@@ -17,4 +17,4 @@ apscheduler = "*"
 pylogrus = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

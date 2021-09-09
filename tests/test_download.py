@@ -36,14 +36,20 @@ def test_download_transaction(upload_file, sftp_server) -> None:
     assert mock_blob.upload_blob.call_count == 2
 
     # Check transaction file
-    assert mock_blob_client.get_blob_client.call_args_list[0][1]["container"] == env["TX_BLOB_STORAGE_CONTAINER"]
+    assert (
+        mock_blob_client.get_blob_client.call_args_list[0][1]["container"]
+        == env["TX_BLOB_STORAGE_CONTAINER"]
+    )
     assert tx_file in mock_blob_client.get_blob_client.call_args_list[0][1]["blob"]
 
     blob_data = mock_blob.upload_blob.call_args_list[0][0][0].read()
     assert blob_data == tx_data
 
     # Check mid file
-    assert mock_blob_client.get_blob_client.call_args_list[1][1]["container"] == env["MID_BLOB_STORAGE_CONTAINER"]
+    assert (
+        mock_blob_client.get_blob_client.call_args_list[1][1]["container"]
+        == env["MID_BLOB_STORAGE_CONTAINER"]
+    )
     assert mid_file in mock_blob_client.get_blob_client.call_args_list[1][1]["blob"]
 
     blob_data = mock_blob.upload_blob.call_args_list[1][0][0].read()

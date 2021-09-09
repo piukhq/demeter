@@ -3,7 +3,7 @@ stages:
   - build
 
 default:
-  image: binkhq/python:3.8 
+  image: ghcr.io/binkhq/python:3.9
 
 flake8:
   stage: tests
@@ -22,7 +22,6 @@ build-develop:
   script:
     - export CTAG="master-$(date +%F-%H%M%S)"
     - docker build --pull -t "$CI_REGISTRY/demeter:$CTAG" .
-    - docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "$CI_REGISTRY/aqua-scanner:5.0" scan --local "$CI_REGISTRY/demeter:$CTAG" --host https://aqua.uksouth.bink.sh:30001/ --user scanner --password $AQUA_PASSWORD --show-negligible --policies Bink --text
     - docker push "$CI_REGISTRY/demeter:$CTAG"
   only:
     - master

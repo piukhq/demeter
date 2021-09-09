@@ -36,14 +36,18 @@ def sftp_server(unused_port, docker_client):
     name = "amex-sftp-{}".format(uuid.uuid4().hex)
 
     if platform.system() == "Darwin":
-        os.system(f"docker run --name {name} -d -p {host_port}:22 atmoz/sftp user:pass:::sent,inbox,outbox")
+        os.system(
+            f"docker run --name {name} -d -p {host_port}:22 atmoz/sftp user:pass:::sent,inbox,outbox"
+        )
     else:
         container_args = dict(
             image="atmoz/sftp",
             name=name,
             ports=[22],
             detach=True,
-            host_config=docker_client.create_host_config(port_bindings={22: (host, host_port)},),
+            host_config=docker_client.create_host_config(
+                port_bindings={22: (host, host_port)},
+            ),
             command="user:pass:::sent,inbox,outbox",
         )
 
@@ -59,14 +63,21 @@ def sftp_server(unused_port, docker_client):
             "port": host_port,
             "user": "user",
             "password": "pass",
-            "env": {"AMEX_SERVER": host, "AMEX_PORT": host_port, "AMEX_USER": "user", "AMEX_PASSWORD": "pass"},
+            "env": {
+                "AMEX_SERVER": host,
+                "AMEX_PORT": host_port,
+                "AMEX_USER": "user",
+                "AMEX_PASSWORD": "pass",
+            },
         }
         delay = 0.001
         for i in range(100):
             try:
                 # Open a transport
                 transport = paramiko.Transport((host, host_port))
-                transport.connect(None, server_params["user"], server_params["password"])
+                transport.connect(
+                    None, server_params["user"], server_params["password"]
+                )
                 sftp = paramiko.SFTPClient.from_transport(transport)
                 sftp.listdir()
 
