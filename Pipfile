@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 docker = "*"
-black = "==21.8b0"
+black = "==24.3.0"
 flake8 = "*"
 isort = "*"
 
